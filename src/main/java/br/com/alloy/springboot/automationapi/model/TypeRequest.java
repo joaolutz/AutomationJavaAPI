@@ -3,6 +3,7 @@ package br.com.alloy.springboot.automationapi.model;
 public class TypeRequest {
 	
 	private String code;
+	private TypeMode typeMode;
 	private boolean sendEnter;
 	
 	/**
@@ -12,6 +13,10 @@ public class TypeRequest {
 		return code;
 	}
 	
+	public TypeMode getTypeMode() {
+		return typeMode;
+	}
+
 	/**
 	 * @return the sendEnter
 	 */

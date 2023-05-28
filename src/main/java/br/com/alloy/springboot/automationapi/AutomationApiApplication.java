@@ -1,5 +1,6 @@
 package br.com.alloy.springboot.automationapi;
 
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.InetAddress;
 
@@ -20,6 +21,8 @@ public class AutomationApiApplication {
 	Logger logger = LoggerFactory.getLogger(AutomationApiApplication.class);
 
 	public static void main(String[] args) {
+		System.out.println(KeyEvent.getExtendedKeyCodeForChar('|'));
+		
 		System.setProperty("java.awt.headless", "false"); //Adding this so that automation can work properly
 		SpringApplication.run(AutomationApiApplication.class, args);
 	}

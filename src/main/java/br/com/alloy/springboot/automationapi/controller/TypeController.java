@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import br.com.alloy.springboot.automationapi.AutomationApiApplication;
 import br.com.alloy.springboot.automationapi.model.TypeRequest;
 
 /**
@@ -30,7 +29,7 @@ import br.com.alloy.springboot.automationapi.model.TypeRequest;
 @RequestMapping("/")
 public class TypeController {
 	
-	Robot keyboard;
+	Robot robot;
 	
 	Logger logger = LoggerFactory.getLogger(TypeController.class);
 	
@@ -41,28 +40,54 @@ public class TypeController {
 
 	@PostMapping("type")
 	public String type(@RequestBody TypeRequest body) throws AWTException {
-		if (keyboard == null) {
-			keyboard = new Robot();
+		if (robot == null) {
+			robot = new Robot();
 		}
 		//log the code read in the app
 		logger.info("Input: " + body.getCode());
-		type(body.getCode());
+		switch(body.getTypeMode()) {
+			case CLIPBOARD:
+				typeClipboard(body.getCode());
+				break;
+			case TYPE:
+				typeDefault(body.getCode());
+		}
 		if (body.isSendEnter()) {
-			keyboard.keyPress(KeyEvent.VK_ENTER);
-			keyboard.keyRelease(KeyEvent.VK_ENTER);
+			robot.keyPress(KeyEvent.VK_ENTER);
+			robot.keyRelease(KeyEvent.VK_ENTER);
 		}
 		return body.getCode() + " sent to keyboard input";
 	}
-	
-	private void type(String s) {
+
+	private void typeClipboard(String s) {
 		final StringSelection stringSelection = new StringSelection(s);
 		final Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clipboard.setContents(stringSelection, stringSelection);
 		
-		keyboard.keyPress(KeyEvent.VK_CONTROL);
-		keyboard.keyPress(KeyEvent.VK_V);
-		keyboard.keyRelease(KeyEvent.VK_V);
-		keyboard.keyRelease(KeyEvent.VK_CONTROL);
+		robot.keyPress(KeyEvent.VK_CONTROL);
+		robot.keyPress(KeyEvent.VK_V);
+		robot.keyRelease(KeyEvent.VK_V);
+		robot.keyRelease(KeyEvent.VK_CONTROL);
 	}
 	
+	private void typeDefault(String code) {
+		for (char c : code.toCharArray()) {
+	        int keyCode = KeyEvent.getExtendedKeyCodeForChar(c);
+	        if (KeyEvent.CHAR_UNDEFINED == keyCode || keyCode == 0) {
+	            throw new RuntimeException(
+	                "Key code not found for character '" + c + "'");
+	        }
+	        if (keyCode < 100) {
+	        	robot.keyPress(keyCode);
+		        robot.keyRelease(keyCode);
+	        } else { //pressiona tecla com o shift acionado
+	        	robot.keyPress(KeyEvent.VK_SHIFT);
+	        	robot.keyPress(keyCode);
+		        robot.keyRelease(keyCode);
+		        robot.keyRelease(KeyEvent.VK_SHIFT);
+	        }
+	        
+	        //robot.delay(100);
+	    }
+	}
 }
