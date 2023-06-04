@@ -22,7 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import br.com.alloy.springboot.automationapi.model.TypeRequest;
 
 /**
- * @author AlloySD
+ * @author Codecraft
  *
  */
 @RestController
@@ -86,7 +86,6 @@ public class TypeController {
 		        robot.keyRelease(keyCode);
 		        robot.keyRelease(KeyEvent.VK_SHIFT);
 	        }
-	        
 	        //robot.delay(100);
 	    }
 	}
