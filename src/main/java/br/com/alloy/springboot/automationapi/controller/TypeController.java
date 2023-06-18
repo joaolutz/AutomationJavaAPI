@@ -73,10 +73,6 @@ public class TypeController {
 	private void typeDefault(String code, boolean windows) {
 		for (char c : code.toCharArray()) {
 	        int keyCode = KeyEvent.getExtendedKeyCodeForChar(c);
-<<<<<<< HEAD
-	        if (KeyEvent.CHAR_UNDEFINED == keyCode || keyCode == 0) {
-	            throw new RuntimeException("Key code not found for character '" + c + "'");
-=======
 	        if (KeyEvent.CHAR_UNDEFINED == keyCode || KeyEvent.VK_UNDEFINED == keyCode) {
 	            logger.warn("Key code not found for character '" + c + "'");
 	        } else {
@@ -95,7 +91,6 @@ public class TypeController {
 		        	robot.keyRelease(KeyEvent.VK_SHIFT);
 		        }
 		        //robot.delay(100);
->>>>>>> branch 'main' of https://github.com/joaolutz/AutomationJavaAPI.git
 	        }
 	    }
 	}
