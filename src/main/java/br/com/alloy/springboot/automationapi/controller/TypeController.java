@@ -74,8 +74,7 @@ public class TypeController {
 		for (char c : code.toCharArray()) {
 	        int keyCode = KeyEvent.getExtendedKeyCodeForChar(c);
 	        if (KeyEvent.CHAR_UNDEFINED == keyCode || keyCode == 0) {
-	            throw new RuntimeException(
-	                "Key code not found for character '" + c + "'");
+	            throw new RuntimeException("Key code not found for character '" + c + "'");
 	        }
 	        if (keyCode < 100) {
 	        	robot.keyPress(keyCode);
