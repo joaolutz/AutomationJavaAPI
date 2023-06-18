@@ -40,7 +40,7 @@ public class TypeController {
 
 	@PostMapping("type")
 	public String type(@RequestBody TypeRequest body) throws AWTException {
-		if (robot == null) {
+		if (robot == null) { 
 			robot = new Robot();
 		}
 		//log the code read in the app
@@ -50,7 +50,7 @@ public class TypeController {
 				typeClipboard(body.getCode());
 				break;
 			case TYPE:
-				typeDefault(body.getCode());
+				typeDefault(body.getCode(), System.getProperty("os.name").toUpperCase().startsWith("WIN"));
 		}
 		if (body.isSendEnter()) {
 			robot.keyPress(KeyEvent.VK_ENTER);
@@ -70,22 +70,33 @@ public class TypeController {
 		robot.keyRelease(KeyEvent.VK_CONTROL);
 	}
 	
-	private void typeDefault(String code) {
+	private void typeDefault(String code, boolean windows) {
 		for (char c : code.toCharArray()) {
 	        int keyCode = KeyEvent.getExtendedKeyCodeForChar(c);
+<<<<<<< HEAD
 	        if (KeyEvent.CHAR_UNDEFINED == keyCode || keyCode == 0) {
 	            throw new RuntimeException("Key code not found for character '" + c + "'");
+=======
+	        if (KeyEvent.CHAR_UNDEFINED == keyCode || KeyEvent.VK_UNDEFINED == keyCode) {
+	            logger.warn("Key code not found for character '" + c + "'");
+	        } else {
+	        	try {
+		        	if (windows || keyCode < 100) {
+			        	robot.keyPress(keyCode);
+				        robot.keyRelease(keyCode);
+			        } else { //pressiona tecla com o shift acionado
+			        	robot.keyPress(KeyEvent.VK_SHIFT);
+			        	robot.keyPress(keyCode);
+				        robot.keyRelease(keyCode);
+				        robot.keyRelease(KeyEvent.VK_SHIFT);
+			        }
+		        } catch(IllegalArgumentException ex) {
+		        	logger.error("Error typing character " + c + " - " + ex.getMessage());
+		        	robot.keyRelease(KeyEvent.VK_SHIFT);
+		        }
+		        //robot.delay(100);
+>>>>>>> branch 'main' of https://github.com/joaolutz/AutomationJavaAPI.git
 	        }
-	        if (keyCode < 100) {
-	        	robot.keyPress(keyCode);
-		        robot.keyRelease(keyCode);
-	        } else { //pressiona tecla com o shift acionado
-	        	robot.keyPress(KeyEvent.VK_SHIFT);
-	        	robot.keyPress(keyCode);
-		        robot.keyRelease(keyCode);
-		        robot.keyRelease(KeyEvent.VK_SHIFT);
-	        }
-	        //robot.delay(100);
 	    }
 	}
 }
