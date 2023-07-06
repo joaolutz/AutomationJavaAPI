@@ -22,7 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import br.com.alloy.springboot.automationapi.model.TypeRequest;
 
 /**
- * @author Codecraft
+ * @author Alloy
  *
  */
 @RestController

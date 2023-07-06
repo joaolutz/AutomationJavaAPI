@@ -1,5 +1,6 @@
 package br.com.alloy.springboot.automationapi;
 
+import java.awt.Desktop;
 import java.io.IOException;
 import java.net.InetAddress;
 
@@ -30,7 +31,7 @@ public class AutomationApiApplication {
 		final String hostName = InetAddress.getLocalHost().getHostName();
 		final String hostAddress = "http://" + hostName + ":" + port;
 		logger.info("Host Address: " + hostAddress);
-		java.awt.Desktop.getDesktop().browse(java.net.URI.create(hostAddress));
+		Desktop.getDesktop().browse(java.net.URI.create(hostAddress));
 	}
 
 }
